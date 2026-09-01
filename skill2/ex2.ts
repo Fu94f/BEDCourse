@@ -22,4 +22,4 @@ printTeacherInfo({
     subject: "English",
     id: 12345,
     email: "marina@school.se"
-})
+});
