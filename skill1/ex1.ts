@@ -4,10 +4,10 @@
 
 type IDType = number | string;
 
-const showID = (id: IDType)=>{
-    console.log("Your Id is:" + id);
+const showID = (id: IDType) : string =>{
+    return "Your Id is:" + id;
 }
 
-showID(12345);
-showID("AB123");
+console.log(showID(12345));
+console.log(showID("AB123"));
 

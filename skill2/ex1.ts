@@ -5,14 +5,15 @@
 interface Book {
     title:string;
     pages:number;
-
 }
 
-const describeBook = (book : Book) =>{
-    console.log(`The book ${book.title} has ${book.pages} pages.`)
-}
-
-describeBook({
+const book: Book = {
     title:"Dune",
     pages:412,
-});
+};
+
+const describeBook = (book : Book) =>{
+    return `The book ${book.title} has ${book.pages} pages.`
+}
+
+console.log(describeBook(book));

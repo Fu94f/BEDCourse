@@ -6,9 +6,11 @@ interface Car{
 }
 
 const printCar = (car: Car)=>{
-    console.log(`Brand: ${car.brand},Year: ${car.year}`);
+    return `Brand: ${car.brand},Year: ${car.year}`);
 }
-printCar({
+const car = {
     brand: "Toyota",
     year:2022
-});
+};
+
+console.log(printCar(car));

@@ -17,9 +17,9 @@ const printTeacherInfo = (schoolTeacher: SchoolTeacher) =>{
     console.log(`Name: ${schoolTeacher.name}, Subject: ${schoolTeacher.subject}, ID: ${schoolTeacher.id}, Email: ${schoolTeacher.email} `)
 }
 
-printTeacherInfo({
+const teacher: SchoolTeacher= {
     name :"Marina",
     subject: "English",
     id: 12345,
     email: "marina@school.se"
-});
+};
