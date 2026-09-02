@@ -2,16 +2,16 @@
 
 type Result = true | false;
 
-const printResult = (result : Result) =>{
+const printResult = (result : Result):string =>{
     if ( result == true){
-        console.log("Pass");
+        return "Pass";
     }
     else {
-      console.log("Fail");  
+      return "Fail";  
     }
 
 }
 
-printResult(true);
-printResult(false);
+console.log(printResult(true));
+console.log(printResult(false));
 
