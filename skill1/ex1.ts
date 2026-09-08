@@ -13,7 +13,7 @@ const placeOrder= (
     item: string,
      callback: OrderCallback,
     ) =>{
-    console.log(`Order placed for ${item}`);
+    console.log(`Order placed for ${item}.`);
     callback();
 };
 
