@@ -12,6 +12,7 @@
 
 const checkStock = new Promise((resolve, reject) =>{
     console.log("test1");
+
     const inStock = true;
 
       if(inStock){
@@ -35,3 +36,7 @@ checkStock
 .catch((error) =>{
     console.log(error);
 });
+
+//1 test1 = the new Promise is the executor and runs immidiatly, syncronusly, the console.log is the first line so it prints right away.
+//2 test2 prints second right after (in main script)
+//3 .then()/.catch()wait to print for the settle risult.
