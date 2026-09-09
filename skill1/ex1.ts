@@ -1,22 +1,23 @@
-//Order Confirmation
+//Task 1: Coin Flip
 
-//Write an arrow function called placeOrder that takes an item: string and a callback: () => void.
-//Inside, log "Order placed for <item>", then call the callback. 
-// Call placeOrder with an inline callback that logs "Thanks for your order!".
-//Then, declare a named function type called OrderCallback for the callback's shape, 
-// and refactor placeOrder to use it instead of the inline type.
+//Take a coin-flip promise like this one and refactor it so it's called using async/await with try/catch, instead of .then()/.catch().
 
-
-type OrderCallback = () => void;
-
-const placeOrder= (
-    item: string,
-     callback: OrderCallback,
-    ) =>{
-    console.log(`Order placed for ${item}.`);
-    callback();
+const flipCoin = () => {
+  return new Promise((resolve, reject) => {
+    const outcome = Math.random() > 0.5;
+    outcome ? resolve("You win!") : reject("You lose!");
+  });
 };
 
-placeOrder("Ikea shelf", (): void  => {
-    console.log("Thank you for your order!")
-});
+const asyncFunction = async () => {
+    try {
+        const result = await flipCoin();
+        console.log(result);
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+};
+
+asyncFunction();

@@ -1,22 +1,27 @@
-//Sum with a Named Type
+// Task 2: Resolve or Reject
 
-//Declare a function type SumCallback describing a function
-// that takes a result: number and returns void.
-//Write a function sumNumbers that takes 
-// a: number, b: number, and a callback: SumCallback, 
-// adds a and b, and passes the result to the callback.
-// Call it with two different numbers and 
-// log the result inside the callback.
+//Take the class's myPromise example (a promise that resolves or rejects based on a boolean) 
+// and refactor the code that consumes it to use async/await instead of .then()/.catch().
 
+const myPromise = new Promise((resolve, reject) => {
+  const success = true;
 
+  if (success) {
+    resolve("Resolved operation successfully!");
+  } else {
+    reject("Resolved operation rejected!");
+  }
+});
 
-type SumCallback = (result: number) => void;
-
-const sumNumbers = (a: number, b: number, callback: SumCallback): void =>{
-    const result = a + b ;
-    callback(result);
+const result = async () => {
+    try {
+        const message = await myPromise;
+        console.log(message);
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
 };
 
-sumNumbers(25, 6, (result: number): void => {
-    console.log(`The result is ${result}`);
-});
+result();
