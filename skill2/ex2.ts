@@ -40,9 +40,9 @@ const fetchAdvice1 = async (id: number): Promise<void> =>{
 };
 
 
-//fetchAdvice1(9999);
+fetchAdvice1(9999);
 
-// tried another with API
+//  to try the logic of try/catch
 
 const fetchAdvice2 = async (id: number): Promise<void> =>{
     try {

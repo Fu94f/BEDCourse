@@ -35,7 +35,7 @@ const fetchAdviceById = (id1: number, id2: number ) => {
 
 };
 
-//fetchAdviceById(1, 3);
+fetchAdviceById(1, 3);
 
 
 const fetchAdviceByIdAsync = async (id1: number, id2: number): Promise<void> => {
@@ -50,29 +50,23 @@ const fetchAdviceByIdAsync = async (id1: number, id2: number): Promise<void> => 
         console.log(`Advice ID: ${id1}: ${data.slip.advice}`);
 
         try {
-        const response = await fetch(`https://api.adviceslip.com/advice/${id2}`)
+           const response = await fetch(`https://api.adviceslip.com/advice/${id2}`)
 
-        if (!response.ok) {
-          throw new Error("Fetching did not work");
+            if (!response.ok) {
+             throw new Error("Fetching did not work");
+            }
+            const data = await response.json();
+            console.log(`Advice ID: ${id2}: ${data.slip.advice}`);
+
+        } catch (error) { 
+            console.log("Error fetching advice:", error);
         }
-        const data = await response.json();
-        console.log(`Advice ID: ${id2}: ${data.slip.advice}`);
 
-        
-        
     } catch (error) {
         console.log("Error fetching advice:", error);
-        
-    }
-
-
-        
-    } catch (error) {
-        console.log("Error fetching advice:", error);
-        
     }
     
-}
+};
 
 
 fetchAdviceByIdAsync(1,3);
