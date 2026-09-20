@@ -33,7 +33,7 @@ let parties: Party[] = [
 ];
 
 
-/*
+
 //Task1
 
 app.get('/parties', (req, res) =>{
@@ -42,7 +42,7 @@ app.get('/parties', (req, res) =>{
 });
 
 
-//Task2  updated in Task 3
+//Task2  
 
 app.post('/parties', (req, res) =>{
      const newParty = {
@@ -54,7 +54,7 @@ app.post('/parties', (req, res) =>{
     parties.push(newParty);
     res.json({message: "New party added successfully", party:newParty})
 
-});*/
+});
 
 //Task3 
 
@@ -64,7 +64,7 @@ app.get('/parties', (req, res) =>{
 
 });
 
-/*
+
 app.post('/parties', (req, res) =>{
      const newParty = {
         id: parties.length + 1,
@@ -75,7 +75,7 @@ app.post('/parties', (req, res) =>{
     parties.push(newParty);
     res.json({message: "New party added successfully", party:newParty})
 
-});*/
+});
 
 
 /*JSON added in Insomnia 
