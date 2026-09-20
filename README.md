@@ -13,7 +13,7 @@ server : `http://localhost:3000`
 **Path:** `/parties`
 **Description:** Displays all the objects in "parties" array.
 **Request body:** none
-**Returns:** the party array of objects 
+**Returns:** the parties array of objects 
 **Status codes:** `200 OK`
 
 ![Screenshot](./server/screenshots/get-parties.png)
@@ -24,9 +24,9 @@ server : `http://localhost:3000`
 
 **Method:** `POST`
 **Path:** `/parties`
-**Description:** adds a new object to the array with a unique id. The object is empty exept for the id.
+**Description:** adds a new object to the array with a unique ID. The object is empty exept for the ID.
 **Request body:** none
-**Returns:** the new party added
+**Returns:** the new party added with a message: new party added succefully
 **Status codes:** `200 OK`
 
 ![Screenshot](./server/screenshots/post-newparty.png)
@@ -37,7 +37,7 @@ server : `http://localhost:3000`
 
 **Method:** `POST`
 **Path:** `/parties`
-**Description:** "upedeted" version of POST/parties. The path is the same with the difference that now
+**Description:** "updeted" version of POST/parties. The path is the same with the difference that now
 the info about the party are added in the body as JSON.
 
 **Request body:** JSON (screenshot)
@@ -52,8 +52,8 @@ the info about the party are added in the body as JSON.
 
 **Method:** `PUT`
 **Path:** `/parties/6`
-**Description:** it finds tha party with the given ID and modifies by replacing complitely with a object
-in the request body.It doesnt create or adds any new elements, just replaces it.
+**Description:** it finds tha party with the given ID and modifies it by replacing it complitely with an object
+(added in the request body).It doesnt create or adds any new resouces, just replaces the existing one.
 
 **Request body:** JSON (screenshot)
 **Returns:** the party updated with the new info with a the message: party updated succefully.
@@ -81,7 +81,7 @@ in the request body.It doesnt create or adds any new elements, just replaces it.
 **Path:** `/parties`
 **Description:** POST/parties updated.
 It returns the correct Status code (201),which is the standard status code for creating a new resource, when a new party is added.
-It also checks that the fileds "name" and "leader"(properties of the party object) are provided. Othewise, it rejects the request and gives back a Status code of (400).
+It also checks that the fileds "name" and "leader"(properties of the object) are provided. Othewise, it rejects the request and gives back a Status code of (400).
 **Request body:** JSON (screenshot)
 **Returns:** the new party or message: name and leader are required
 **Status codes:** `201 Created`, `400 Bad Request`
