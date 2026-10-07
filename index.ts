@@ -8,21 +8,22 @@ const PORT = Number(process.env.PORT) || 3000;
 app.use(express.json());
 
 
-// GET
+// GET 
 
-app.get('/', (req, res) => {
-    res.send("Welcome to the Library API");
+app.get('/', (req: Request, res: Response) => {
+    res.send("Welcome to the Library");
 });
 
-const allowedSorts = ["title", "published_year", "genre"];
+const allowedSorts = ["title", "published_year", "genre", "author_id"];
 
 // GET all books ( + optional query params)
 
-app.get('/books', async (req, res) => {
+
+app.get('/books', async (req: Request, res: Response) => {
     const { genre, sort } = req.query;
 
     if (sort !== undefined && (typeof sort !== "string" || !allowedSorts.includes(sort))) {
-        return res.status(400).send("Invalid sort column");
+        return res.status(400).send(" Invalid sort column");
     }
     const orderBy = sort || "id";
 
@@ -31,23 +32,30 @@ app.get('/books', async (req, res) => {
 
         if (typeof genre === "string") {
             result = await pool.query(
-                `SELECT * FROM books WHERE genre = $1 ORDER BY ${orderBy}`,
+                `SELECT * 
+                FROM books 
+                WHERE genre = $1 
+                ORDER BY ${orderBy}`,
                 [genre]
             );
-        } else {
-            result = await pool.query(`SELECT * FROM books ORDER BY ${orderBy}`);
-        }
 
+        } else {
+            result = await pool.query(
+                `SELECT * 
+                FROM books 
+                ORDER BY ${orderBy}`
+            );
+        }
         res.json(result.rows);
 
     } catch (error) {
-        res.sendStatus(500);
+        res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
 // GET book by id
 
-app.get('/books/:id', async (req, res) =>{
+app.get('/books/:id', async (req: Request, res: Response) =>{
     const{ id }= req.params;
 
     if (!Number.isInteger(Number(id))) {
@@ -55,9 +63,13 @@ app.get('/books/:id', async (req, res) =>{
     }
 
     try {
-        const result = await  pool.query("SELECT * FROM books WHERE id = $1", 
+        const result = await  pool.query(
+            `SELECT * 
+            FROM books 
+            WHERE id = $1`,
             [id]
         );
+
         if (result.rows.length === 0) {
             return res.status(404).send("Book not found");
         }
@@ -65,11 +77,12 @@ app.get('/books/:id', async (req, res) =>{
         res.json(result.rows[0]);
         
     } catch (error) {
-        res.sendStatus(500);
+        res.status(500).send(error instanceof Error ? error.message : "Unknown error");
         
     }
 });
 
+//POST new book
 
 interface NewBook {
     title: string;
@@ -78,7 +91,6 @@ interface NewBook {
     author_id?: number;
 }
 
-//POST new book
 
 app.post('/books', async (req: Request<{}, {}, NewBook>, res: Response) =>{
     const{ title, genre, published_year, author_id } = req.body;
@@ -88,40 +100,58 @@ app.post('/books', async (req: Request<{}, {}, NewBook>, res: Response) =>{
 }
     try {
         const result = await pool.query(
-            `INSERT INTO books (title, genre, published_year,author_id) VALUES ($1, $2, $3, $4) RETURNING * `, 
-            [title, genre, published_year, author_id]);
-            res.status(201).json(result.rows[0]);
+            `INSERT INTO books (title, genre, published_year,author_id)
+            VALUES ($1, $2, $3, $4) 
+            RETURNING * `, 
+            [title, genre, published_year, author_id]
+        );
+        res.status(201).json(result.rows[0]);
         
-    } catch (error) {
-            if (error instanceof pg.DatabaseError && error.code === "23503") {
-                return res.status(400).send("Author does not exist");
-            }
-
+    } catch (error: any) {
+        if (error.code === "23503") {
+            return res.status(400).send("Author does not exist");
+        }
         res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
-// UPDATE
+// PUT UPDATE
 
 interface UpdateBook {
     title: string;
     genre: string;
     published_year: number;
-    id: number;
+
 }
 
 app.put('/books/:id',async (req: Request<{ id: string }, {}, UpdateBook>, res: Response) =>{
     const{ id }= req.params;
     const{ title, genre, published_year } = req.body;
+
+    if (!Number.isInteger(Number(id))) {
+        return res.status(400).send("ID must be a number");
+    }
+
+    if (!title) {
+        return res.status(400).send("Title is required");
+    }
+
+
     try {
         const result = await pool.query(
-            'UPDATE books SET title = $1, genre = $2, published_year = $3 WHERE id = $4 RETURNING * ',
+            `UPDATE books 
+            SET title = $1, 
+            genre = $2, 
+            published_year = $3 
+            WHERE id = $4 
+            RETURNING * `,
             [title, genre, published_year, id]
         );
+
         if(result.rows.length === 0){
             return res.status(404).send("Book not found")
-
         }
+
         res.json(result.rows[0]);
     } catch (error) {
         res.status(500).send(error instanceof Error ? error.message : "Unknown error");
@@ -174,16 +204,19 @@ app.delete('/books/:id', async(req: Request<{ id: string }>, res: Response) =>{
 
     try {
         const result = await pool.query(
-            "DELETE FROM books WHERE id = $1 RETURNING *",
+            `DELETE FROM books 
+            WHERE id = $1 
+            RETURNING *`,
             [id]
         );
-            if(result.rows.length === 0){
-              return res.status(404).send("Book not found")
-            }
+        
+        if(result.rows.length === 0){
+            return res.status(404).send("Book not found");
+        }
+
         res.send("Book deleted successfully");
     } catch (error) {
         res.status(500).send(error instanceof Error ? error.message : "Unknown error");
-        
     }
    
 });
@@ -194,7 +227,7 @@ app.delete('/books/:id', async(req: Request<{ id: string }>, res: Response) =>{
 app.get('/authors', async (req: Request, res: Response) => {
     try {
         const result = await pool.query(
-            'SELECT * FROM authors'
+            `SELECT * FROM authors`
         );
 
         res.json(result.rows);
@@ -245,7 +278,9 @@ app.post('/authors', async(req: Request<{}, {}, NewAuthor>, res: Response) => {
 
     try {
         const result = await pool.query(
-            'INSERT INTO authors (name) VALUES ($1) RETURNING *',
+            `INSERT INTO authors (name) 
+            VALUES ($1)
+            RETURNING *`,
             [name]
         );
 

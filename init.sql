@@ -18,6 +18,12 @@ CREATE TABLE authors (
 );
 
 
-
 ALTER TABLE books
-ADD COLUMN author_id INTEGER REFERENCES authors(id);
+ADD COLUMN author_id INT REFERENCES authors(id);
+
+INSERT INTO authors (name)
+VALUES
+('J.R.R. Tolkien'),
+('George Orwell'),
+('Astrid Lindgren'),
+('Suzanne Collins');
