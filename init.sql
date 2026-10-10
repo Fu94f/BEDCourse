@@ -1,31 +1,33 @@
-services:
-  db:
-    container_name: postgres_container
-    image: postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
-    ports:
-      - "${DB_PORT}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/18/docker
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    genre VARCHAR(50),
+    published_year INT
+);
 
-  pgadmin:
-    container_name: pgadmin4_container
-    image: dpage/pgadmin4
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - "${PGADMIN_PORT}:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - db
+INSERT INTO books (title, genre, published_year)
+VALUES
+('The Hobbit', 'fantasy', 1937),
+('1984', 'dystopian', 1949),
+('Pippi Longstocking', 'children', 1945),
+('The Hunger Games', 'dystopian', 2008);
 
-volumes:
-  postgres_data:
-  pgadmin_data:
+
+SELECT * FROM books;
+
+CREATE TABLE authors (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+ALTER TABLE books
+ADD COLUMN author_id INTEGER REFERENCES authors(id);
+
+INSERT INTO authors (name)
+VALUES
+('J.R.R. Tolkien'),
+('George Orwell'),
+('Astrid Lindgren'),
+('Suzanne Collins');
+
+SELECT * FROM authors;
