@@ -178,7 +178,7 @@ app.post('/authors', async (req: Request, res: Response) =>{
 
     try {
         const author = await Author.create({ name});
-        res.status(201).json(author);
+        res.status(201).json({ message: "Author successfully", author });
         
     } catch (error) {
         res.status(500).send(error instanceof Error ? error.message : "Unknown error");
