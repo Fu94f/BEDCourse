@@ -21,7 +21,13 @@ describe(" Schema Tests", () => {
         expect(() => PizzaSchema.parse({ type: "pepperoni" })).toThrow();
     });
 
-    
+    test("AmountSchema throws when the value is a string", ()=>{
+        expect(() => AmountSchema.parse("100")).toThrow();
+    });
+
+
+
+
 
 
 
