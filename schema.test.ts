@@ -8,6 +8,11 @@ describe(" Schema Tests", () => {
       expect(result).toBe("margherita");
     });
 
+    test("PizzaTypeSchema throws an error with capital M ", () => {
+      expect(() => PizzaTypeSchema.parse("Margherita")).toThrow();
+    });
+
+    
 
 
 });
