@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { createPizza, orderPizza, sendOrder } from "./pizzashop";
+import { createPizza, orderPizza, sendOrder, chargeCustomer } from "./pizzashop";
 
 describe("Pizza Shop Unit Tests", () => {
   test("createPizza returns correct type and price", () => {
@@ -33,5 +33,10 @@ describe("Pizza Shop Unit Tests", () => {
     expect(result).toBe(true);
   });
 
+  test("chargeCustomer true for a valid order ID and amount", () =>{
+    const result = chargeCustomer(42, 100);
+
+    expect(result).toBe(true);
+  });
 
 });
