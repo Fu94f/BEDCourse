@@ -39,4 +39,8 @@ describe("Pizza Shop Unit Tests", () => {
     expect(result).toBe(true);
   });
 
+  test("chargeCustomer throws an error when the order ID is undefined", () =>{
+    expect(() => chargeCustomer(undefined, 100)).toThrow();
+  });
+
 });
