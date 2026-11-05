@@ -12,7 +12,16 @@ describe(" Schema Tests", () => {
       expect(() => PizzaTypeSchema.parse("Margherita")).toThrow();
     });
 
-    
+    test("Pizzachema returns an equal object", ()=>{
+        const pizza = PizzaSchema.parse({ type: "pepperoni", price: 120 })
+        expect(pizza).toEqual({ type: "pepperoni", price: 120 });
+    });
+
+    test("Pizzachema throws, because the price is missing", ()=>{
+        expect(() => PizzaSchema.parse({ type: "pepperoni" })).toThrow();
+    });
+
+
 
 
 });
