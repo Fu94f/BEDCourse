@@ -25,6 +25,12 @@ describe(" Schema Tests", () => {
         expect(() => AmountSchema.parse("100")).toThrow();
     });
 
+    test("OrderIdSchema accepts and returns 0", ()=>{
+        const result = OrderIdSchema.parse(0);
+
+        expect(result).toBe(0);
+    });
+
 
 
 
