@@ -43,6 +43,12 @@ describe("Library Unit Tests", () => {
     
     });
 
+    test("checkOutBook throw without copiesAvailable", () => {
+        expect(() => checkOutBook({ title: "dune"})).toThrow();
+    })
+
+
+
   
 
 
