@@ -29,6 +29,10 @@ export const findBook = (title: unknown): Book => {
 
 export const checkOutBook = (book: unknown): number => {
     const validCopy = BookSchema.parse(book);
+    if (validCopy.copiesAvailable === 0) {
+        throw new Error("No copies available");
+    }
+
     const loanId = Math.floor(Math.random() * 9000) + 1000;
     return loanId;
 };
