@@ -48,5 +48,10 @@ export const checkOutBook = (book: unknown): number => {
 export const registerLoan = (loanId: unknown, title: unknown, memberId: unknown): Loan => {
     const validLoan = LoanSchema.parse({loanId, title, memberId});
     return validLoan;
-   
+};
+
+export const borrowBook = (title: unknown, memberId: unknown): Loan =>{
+    const book = findBook(title);
+    const loanId = checkOutBook(book);
+    return registerLoan(loanId, book.title, memberId);
 };
