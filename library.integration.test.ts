@@ -20,6 +20,10 @@ describe("Library Integration Test", () => {
         expect(() => borrowBook("foundation", 7)).toThrow("No copies available");
     });
 
+    test("borrowBook thows when member ID is negative", () => {
+        expect(() => borrowBook("dune", -1)).toThrow();
+    });
+
     
 });
 
