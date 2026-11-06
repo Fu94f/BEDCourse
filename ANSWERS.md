@@ -20,3 +20,8 @@ I connected the dots when I wrote the test for the `undefined` order ID, I accid
 
 This tells me that a test with just `.toThrow()` only checks that SOME error happens, as a matter of fact, it passed even with the typo in the message. A test with the exact message checks WHICH error happens, and it catches a single wrong letter. It also tells me that is probably smarter to copy paste the message next time.
 
+## Exercise 3
+
+## Question: Why use toEqual and not toBe when you compare objects?
+
+In the PizzaSchema test, parse() builds a new object so `toBe` would fail because it checks if the two values are the exact same. It works for simple values like when the string `"margherita"` is equal to `"margherita"`. `toEqual` compares the contents (the keys and values), so it passes when the two objects have the same properties with the same values.
