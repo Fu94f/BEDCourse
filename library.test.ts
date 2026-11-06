@@ -25,9 +25,17 @@ describe("Library Unit Tests", () => {
         expect(typeof loanId).toBe("number");
     });
 
-     test("checkOutBook returns a whole number", () => {
+    test("checkOutBook returns a whole number", () => {
         const loanId = checkOutBook({ title: "dune", copiesAvailable: 3 });
         expect(Number.isInteger(loanId)).toBe(true);
+    });
+
+    test("checkOutBook returns a number between 1000 and 9999", () => {
+        const loanId = checkOutBook({ title: "dune", copiesAvailable: 3 });
+
+        expect(Number.isInteger(loanId)).toBe(true);
+        expect(loanId).toBeGreaterThanOrEqual(1000);
+        expect(loanId).toBeLessThan(9999);
     });
 
   
