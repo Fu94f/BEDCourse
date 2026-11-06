@@ -45,3 +45,6 @@ test("checkOutBook returns a loanId between 1000 and 9999", () => {
 });
 
 ```
+## Question: In the "foundation" test, the error comes from checkOutBook, but you only called borrowBook. What does that show you about how errors travel through a chain of functions?
+
+It shows that an error in any step of the chain stops the whole chain.
