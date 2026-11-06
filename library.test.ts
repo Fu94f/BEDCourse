@@ -12,6 +12,12 @@ describe("Library Unit Tests", () => {
         expect(book).toEqual({ title: "foundation", copiesAvailable: 0});
     });
 
+    test("findBook throws for unknown title", () => {
+       expect(() => findBook("harry potter")).toThrow();
+    });
+
+
+
    
 
 
