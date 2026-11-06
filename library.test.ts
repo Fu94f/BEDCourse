@@ -25,6 +25,11 @@ describe("Library Unit Tests", () => {
         expect(typeof loanId).toBe("number");
     });
 
+     test("checkOutBook returns a whole number", () => {
+        const loanId = checkOutBook({ title: "dune", copiesAvailable: 3 });
+        expect(Number.isInteger(loanId)).toBe(true);
+    });
+
   
 
 
