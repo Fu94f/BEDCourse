@@ -6,4 +6,15 @@ describe("Library Unit Tests", () => {
         const book = findBook("dune");
         expect(book).toEqual({ title: "dune", copiesAvailable: 3});
     });
+
+    test("findBook returns the book, even though it has 0 copies", () => {
+        const book = findBook("foundation");
+        expect(book).toEqual({ title: "foundation", copiesAvailable: 0});
+    });
+
+   
+
+
+
 });
+
