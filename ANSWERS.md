@@ -25,3 +25,23 @@ This tells me that a test with just `.toThrow()` only checks that SOME error hap
 ## Question: Why use toEqual and not toBe when you compare objects?
 
 In the PizzaSchema test, parse() builds a new object so `toBe` would fail because it checks if the two values are the exact same. It works for simple values like when the string `"margherita"` is equal to `"margherita"`. `toEqual` compares the contents (the keys and values), so it passes when the two objects have the same properties with the same values.
+
+## Exercise 5
+
+## Question: Your "between 1000 and 9999" test uses a random number. Could it pass by luck even if the code were wrong? What could you do to make it more trustworthy?
+
+Yes, it could pass by luck with a wrong range for example  Math.floor(Math.random() * 10000). Since the numbers are random the test could by chance pass.
+
+To make it more trustworthy, the function could be called in a loop the checks every result so, in case the range is wrong, it will show.
+
+```typescript
+
+test("checkOutBook returns a loanId between 1000 and 9999", () => {
+    for (let i = 0; i < 1000; i++) {
+        const loanId = checkOutBook({ title: "dune", copiesAvailable: 3 });
+        expect(loanId).toBeGreaterThanOrEqual(1000);
+        expect(loanId).toBeLessThanOrEqual(9999);
+    }
+});
+
+```
