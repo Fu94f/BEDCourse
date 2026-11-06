@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { checkOutBook, findBook } from "./library";
+import { checkOutBook, findBook, registerLoan } from "./library";
 
 describe("Library Unit Tests", () => {
     test("findBook returns correct title and copies available", () => {
@@ -45,7 +45,12 @@ describe("Library Unit Tests", () => {
 
     test("checkOutBook throw without copiesAvailable", () => {
         expect(() => checkOutBook({ title: "dune"})).toThrow();
-    })
+    });
+
+    test("registerLoan returns a loan with the given values",()=> {
+        const loan = registerLoan(1234, "dune", 7);
+        expect(loan).toEqual({ loanId: 1234, title: "dune", memberId: 7 });
+    });
 
 
 

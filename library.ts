@@ -15,12 +15,20 @@ export const BookSchema = z.object({
     copiesAvailable:z.number().int().nonnegative(),
 });
 
-export const LoanIdSchema = z.number().int().nonnegative();
+export const LoanIdSchema = z.number().int().positive();
+export const MemberId = z.number().int().positive();
+
+export const LoanSchema = z.object({
+    loanId:LoanIdSchema,
+    title:BookTitleSchema,
+    memberId:MemberId,
+});
 
 
 // Types inferred from the schemas
 export type BookTitle = z.infer<typeof BookTitleSchema>;
 export type Book = z.infer<typeof BookSchema>;
+export type Loan = z.infer<typeof LoanSchema>;
 
 export const findBook = (title: unknown): Book => {
   const bookTitle = BookTitleSchema.parse(title);
@@ -35,4 +43,10 @@ export const checkOutBook = (book: unknown): number => {
 
     const loanId = Math.floor(Math.random() * 9000) + 1000;
     return loanId;
+};
+
+export const registerLoan = (loanId: unknown, title: unknown, memberId: unknown): Loan => {
+    const validLoan = LoanSchema.parse({loanId, title, memberId});
+    return validLoan;
+   
 };
