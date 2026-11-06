@@ -16,6 +16,10 @@ describe("Library Unit Tests", () => {
        expect(() => findBook("harry potter")).toThrow();
     });
 
+    test("findBook throws when title is a number", () => {
+       expect(() => findBook(42)).toThrow();
+    });
+
 
 
    
