@@ -56,6 +56,10 @@ describe("Library Unit Tests", () => {
         expect(() => registerLoan(1234, "dune",  0)).toThrow();
     });
 
+    test("registerLoan throws when the title is not in the catalog ",()=> {
+        expect(() => registerLoan(1234, "harry potter",  3)).toThrow();
+    });
+
 
 
   
