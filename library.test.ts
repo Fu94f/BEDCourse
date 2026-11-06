@@ -52,6 +52,10 @@ describe("Library Unit Tests", () => {
         expect(loan).toEqual({ loanId: 1234, title: "dune", memberId: 7 });
     });
 
+    test("registerLoan throws when memberId is 0 ",()=> {
+        expect(() => registerLoan(1234, "dune",  0)).toThrow();
+    });
+
 
 
   
