@@ -16,12 +16,12 @@ export const BookSchema = z.object({
 });
 
 export const LoanIdSchema = z.number().int().positive();
-export const MemberId = z.number().int().positive();
+export const MemberIdSchema = z.number().int().positive();
 
 export const LoanSchema = z.object({
     loanId:LoanIdSchema,
     title:BookTitleSchema,
-    memberId:MemberId,
+    memberId:MemberIdSchema,
 });
 
 

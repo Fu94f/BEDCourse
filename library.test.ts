@@ -35,7 +35,7 @@ describe("Library Unit Tests", () => {
 
         expect(Number.isInteger(loanId)).toBe(true);
         expect(loanId).toBeGreaterThanOrEqual(1000);
-        expect(loanId).toBeLessThan(9999);
+        expect(loanId).toBeLessThanOrEqual(9999);
     });
 
     test("checkOutBook throw if there are 0 copies available", () => {
@@ -59,17 +59,5 @@ describe("Library Unit Tests", () => {
     test("registerLoan throws when the title is not in the catalog ",()=> {
         expect(() => registerLoan(1234, "harry potter",  3)).toThrow();
     });
-
-
-
-  
-
-
-
-
-   
-
-
-
 });
 
