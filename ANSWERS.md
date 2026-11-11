@@ -36,3 +36,10 @@ DSN goes in the `.env file` so that it doesnt get pushed to GitHub.Even if it is
 - A trace ID;
 - The time it happened and the number of events;
 - The runtime: Node.js version
+
+## Question: What happened when the handler was above the routes, and why? (Think about the order in which Express runs middleware.)
+
+I think here I was supposed to prove that order matters in Express. The expected result was that by moving the handler above the routes I wouldn't have new event in Sentry. Since Express runs middleware in the order top to bottm, and when /debug-sentry throws, Express should only pass the error to error handlers written after that route. A handler positioned above shouldn't see the error.
+
+My result didn't match though, an event arrived in every position, even with the handler removed.
+The most likely reason is my Sentry version,  where the handler function is marked deprecated and it seems to catch route errors on its own, without the handler.That's only an hypotesis because I couldnt find any answer in the documentation.
