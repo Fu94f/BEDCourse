@@ -43,3 +43,12 @@ I think here I was supposed to prove that order matters in Express. The expected
 
 My result didn't match though, an event arrived in every position, even with the handler removed.
 The most likely reason is my Sentry version,  where the handler function is marked deprecated and it seems to catch route errors on its own, without the handler.That's only an hypotesis because I couldnt find any answer in the documentation.
+
+## Ex 4
+
+## Question: Why didn't the errors inside your try/catch reach setupExpressErrorHandler by themselves?
+
+Because the route catches the error and answers by itself, so the error never reaches setupExpressErrorHandler. Express only passes an error forward to the error handlers if the route throws it or passes it on. Here the error goes to the catch block and the catch deals with it so the Sentry’s handler is never called. Inside the catc, Sentry.captureException(error) hands the error to Sentry first and then the routes gives a response.
+
+## Question: Several requests failed for the same reason. Did Sentry show them as separate issues, or group them? Why is that useful?
+
