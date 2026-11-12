@@ -7,6 +7,7 @@ import Book from "./models/book";
 import Author from "./models/author";
 import Member from "./models/member";
 import Loan from "./models/loan";
+import { reportError } from "./utils/reportError";
 
 
 Author.hasMany(Book, { foreignKey: "author_id" });
@@ -28,20 +29,19 @@ app.get("/", (req: Request, res: Response) => {
 //GET books
 app.get("/books", async (req: Request, res: Response) => {
     Sentry.addBreadcrumb({ message: "Fetch books route", level: "info" });
-    Sentry.setTag("feature", "books");
+
     try {
         const books = await Book.findAll({include: { model: Author, attributes: ["name"] }, });
         res.json(books);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+      reportError(error, "books");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
 //GET book by id
 app.get('/books/:id', async (req: Request, res: Response) =>{
     Sentry.addBreadcrumb({ message: "Fetch books by id route", level: "info" });
-    Sentry.setTag("feature", "books");
     
     const id = Number(req.params.id);
 
@@ -57,15 +57,14 @@ app.get('/books/:id', async (req: Request, res: Response) =>{
         }
         res.json(book);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+      reportError(error, "books");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
 //POST book
 app.post('/books', async (req: Request, res: Response) =>{
     Sentry.addBreadcrumb({ message: "Create books route", level: "info" });
-    Sentry.setTag("feature", "books");
     
     const{ title, genre, published_year, author_id } = req.body;
 
@@ -74,15 +73,14 @@ app.post('/books', async (req: Request, res: Response) =>{
         res.status(201).json(book);
         
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+      reportError(error, "books");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
 //PUT book
 app.put('/books/:id', async (req: Request, res: Response) =>{
     Sentry.addBreadcrumb({ message: "Update books route", level: "info" });
-    Sentry.setTag("feature", "books");
     
     const id = Number(req.params.id);
     const{ title, genre, published_year} = req.body;
@@ -104,8 +102,8 @@ app.put('/books/:id', async (req: Request, res: Response) =>{
         await book.update({ title, genre, published_year });
         res.json(book);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+      reportError(error, "books");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
@@ -113,7 +111,6 @@ app.put('/books/:id', async (req: Request, res: Response) =>{
 
 app.delete('/books/:id', async (req: Request, res: Response) =>{
     Sentry.addBreadcrumb({ message: "Delete books route", level: "info" });
-    Sentry.setTag("feature", "books");
     
     const id = Number(req.params.id);
 
@@ -130,29 +127,27 @@ app.delete('/books/:id', async (req: Request, res: Response) =>{
         await book.destroy();
         res.json(book);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+      reportError(error, "books");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
 //GET authors
 app.get("/authors", async (req: Request, res: Response) => {
     Sentry.addBreadcrumb({ message: "Fetch authors route", level: "info" });
-    Sentry.setTag("feature", "authors");
     
     try {
         const authors = await Author.findAll();
         res.json(authors);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+      reportError(error, "authors");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 //GET author by id
 
 app.get('/authors/:id', async (req: Request, res: Response) =>{
     Sentry.addBreadcrumb({ message: "Fetch authors by id route", level: "info" });
-    Sentry.setTag("feature", "authors");
     
     const id = Number(req.params.id);
 
@@ -168,8 +163,8 @@ app.get('/authors/:id', async (req: Request, res: Response) =>{
         }
         res.json(author);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+      reportError(error, "authors");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
@@ -177,7 +172,6 @@ app.get('/authors/:id', async (req: Request, res: Response) =>{
 //GET  an author with all their books
 app.get("/authors/:id/books", async (req: Request, res: Response) => {
     Sentry.addBreadcrumb({ message: "Fetch authors with books route", level: "info" });
-    Sentry.setTag("feature", "authors");
     
     const id = Number(req.params.id);
 
@@ -193,17 +187,15 @@ app.get("/authors/:id/books", async (req: Request, res: Response) => {
         }
         res.json(author);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+       reportError(error, "authors");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
-
-
 
 //POST author 
 app.post('/authors', async (req: Request, res: Response) =>{
     Sentry.addBreadcrumb({ message: "Create authors route", level: "info" });
-    Sentry.setTag("feature", "authors");
+   
 
     const{ name } = req.body;
 
@@ -216,8 +208,8 @@ app.post('/authors', async (req: Request, res: Response) =>{
         res.status(201).json({ message: "Author successfully", author });
         
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+       reportError(error, "authors");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
@@ -226,7 +218,7 @@ app.post('/authors', async (req: Request, res: Response) =>{
 
 app.delete('/authors/:id', async (req: Request, res: Response) =>{
     Sentry.addBreadcrumb({ message: "Delete authors route", level: "info" });
-    Sentry.setTag("feature", "authors");
+    
 
     const id = Number(req.params.id);
 
@@ -246,7 +238,7 @@ app.delete('/authors/:id', async (req: Request, res: Response) =>{
         if (error instanceof ForeignKeyConstraintError) {
             return res.status(409).send("Author still has books and cannot be deleted");
         }
-        Sentry.captureException(error);
+        reportError(error, "authors");
         res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
@@ -255,7 +247,6 @@ app.delete('/authors/:id', async (req: Request, res: Response) =>{
 
 app.post("/loans", async (req: Request, res: Response) => {
     Sentry.addBreadcrumb({ message: "create loan route", level: "info" });
-    Sentry.setTag("feature", "loans");
     
     const { member_id, book_id } = req.body;
 
@@ -277,8 +268,8 @@ app.post("/loans", async (req: Request, res: Response) => {
         const loan = await Loan.create({ member_id, book_id });
         res.status(201).json(loan);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+       reportError(error, "loans");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
 });
 
@@ -286,7 +277,6 @@ app.post("/loans", async (req: Request, res: Response) => {
 
 app.get("/members/:id/loans", async (req: Request, res: Response) => {
     Sentry.addBreadcrumb({ message: "Fetch members by id route", level: "info" });
-    Sentry.setTag("feature", "members");
     
     const id = Number(req.params.id);
 
@@ -307,10 +297,9 @@ app.get("/members/:id/loans", async (req: Request, res: Response) => {
         }
         res.json(member);
     } catch (error) {
-      Sentry.captureException(error);
-      res.status(500).send(error instanceof Error ? error.message :"Unknown error");
+       reportError(error, "members");
+      res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
-});
 
 /* 
 app.get("/debug-sentry", function mainHandler(req, res) {
