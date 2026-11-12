@@ -48,7 +48,20 @@ The most likely reason is my Sentry version,  where the handler function is mark
 
 ## Question: Why didn't the errors inside your try/catch reach setupExpressErrorHandler by themselves?
 
-Because the route catches the error and answers by itself, so the error never reaches setupExpressErrorHandler. Express only passes an error forward to the error handlers if the route throws it or passes it on. Here the error goes to the catch block and the catch deals with it so the Sentry’s handler is never called. Inside the catc, Sentry.captureException(error) hands the error to Sentry first and then the routes gives a response.
+Because the route catches the error and answers by itself, so the error never reaches `setupExpressErrorHandler`. `Express` only passes an error forward to the error handlers if the route throws it or passes it on. Here the error goes to the catch block and the catch deals with it so the Sentry’s handler is never called. Inside the catch, `Sentry.captureException(error)` hands the error to Sentry first and then the routes gives a response.
 
 ## Question: Several requests failed for the same reason. Did Sentry show them as separate issues, or group them? Why is that useful?
 
+Sentry shows them as a group because they all signal the same problem. I guess it's easier to get to root of the problem knowing that they are grouped for a reason.
+
+## Ex 5
+
+## Question: Explain the difference between a breadcrumb and a tag in your own words. Give one example of when each one would help your team
+
+- A `breadcrumb` is a sort of small note that records what the app did before an error happened.
+
+exemple: if there is an error let's say GET/books fails, the breadcrumbs show that the request has reached the route, so that we could undestand whsat happen to cause the error.
+
+- A `tag` is a label attached to an error, that it can be searched and filtered.
+
+exemple: if the team needs to improve a specific category of errors,for example feature: books, the tags help to look for one category without the rest.
