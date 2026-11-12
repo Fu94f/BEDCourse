@@ -27,6 +27,8 @@ app.get("/", (req: Request, res: Response) => {
 
 //GET books
 app.get("/books", async (req: Request, res: Response) => {
+    Sentry.addBreadcrumb({ message: "Fetch books route", level: "info" });
+    Sentry.setTag("feature", "books");
     try {
         const books = await Book.findAll({include: { model: Author, attributes: ["name"] }, });
         res.json(books);
@@ -38,6 +40,9 @@ app.get("/books", async (req: Request, res: Response) => {
 
 //GET book by id
 app.get('/books/:id', async (req: Request, res: Response) =>{
+    Sentry.addBreadcrumb({ message: "Fetch books by id route", level: "info" });
+    Sentry.setTag("feature", "books");
+    
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0){
@@ -59,6 +64,9 @@ app.get('/books/:id', async (req: Request, res: Response) =>{
 
 //POST book
 app.post('/books', async (req: Request, res: Response) =>{
+    Sentry.addBreadcrumb({ message: "Create books route", level: "info" });
+    Sentry.setTag("feature", "books");
+    
     const{ title, genre, published_year, author_id } = req.body;
 
     try {
@@ -73,6 +81,9 @@ app.post('/books', async (req: Request, res: Response) =>{
 
 //PUT book
 app.put('/books/:id', async (req: Request, res: Response) =>{
+    Sentry.addBreadcrumb({ message: "Update books route", level: "info" });
+    Sentry.setTag("feature", "books");
+    
     const id = Number(req.params.id);
     const{ title, genre, published_year} = req.body;
 
@@ -101,6 +112,9 @@ app.put('/books/:id', async (req: Request, res: Response) =>{
 //DELETE book
 
 app.delete('/books/:id', async (req: Request, res: Response) =>{
+    Sentry.addBreadcrumb({ message: "Delete books route", level: "info" });
+    Sentry.setTag("feature", "books");
+    
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -123,6 +137,9 @@ app.delete('/books/:id', async (req: Request, res: Response) =>{
 
 //GET authors
 app.get("/authors", async (req: Request, res: Response) => {
+    Sentry.addBreadcrumb({ message: "Fetch authors route", level: "info" });
+    Sentry.setTag("feature", "authors");
+    
     try {
         const authors = await Author.findAll();
         res.json(authors);
@@ -134,6 +151,9 @@ app.get("/authors", async (req: Request, res: Response) => {
 //GET author by id
 
 app.get('/authors/:id', async (req: Request, res: Response) =>{
+    Sentry.addBreadcrumb({ message: "Fetch authors by id route", level: "info" });
+    Sentry.setTag("feature", "authors");
+    
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0){
@@ -156,6 +176,9 @@ app.get('/authors/:id', async (req: Request, res: Response) =>{
 
 //GET  an author with all their books
 app.get("/authors/:id/books", async (req: Request, res: Response) => {
+    Sentry.addBreadcrumb({ message: "Fetch authors with books route", level: "info" });
+    Sentry.setTag("feature", "authors");
+    
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -179,6 +202,9 @@ app.get("/authors/:id/books", async (req: Request, res: Response) => {
 
 //POST author 
 app.post('/authors', async (req: Request, res: Response) =>{
+    Sentry.addBreadcrumb({ message: "Create authors route", level: "info" });
+    Sentry.setTag("feature", "authors");
+
     const{ name } = req.body;
 
     if (!name) {
@@ -199,6 +225,9 @@ app.post('/authors', async (req: Request, res: Response) =>{
 //DELETE author
 
 app.delete('/authors/:id', async (req: Request, res: Response) =>{
+    Sentry.addBreadcrumb({ message: "Delete authors route", level: "info" });
+    Sentry.setTag("feature", "authors");
+
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -225,6 +254,9 @@ app.delete('/authors/:id', async (req: Request, res: Response) =>{
 // POST loans
 
 app.post("/loans", async (req: Request, res: Response) => {
+    Sentry.addBreadcrumb({ message: "create loan route", level: "info" });
+    Sentry.setTag("feature", "loans");
+    
     const { member_id, book_id } = req.body;
 
     if (!member_id || !book_id) {
@@ -253,6 +285,9 @@ app.post("/loans", async (req: Request, res: Response) => {
 //GET members id
 
 app.get("/members/:id/loans", async (req: Request, res: Response) => {
+    Sentry.addBreadcrumb({ message: "Fetch members by id route", level: "info" });
+    Sentry.setTag("feature", "members");
+    
     const id = Number(req.params.id);
 
     if (!Number.isInteger(id) || id <= 0) {
