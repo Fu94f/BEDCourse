@@ -65,3 +65,9 @@ exemple: if there is an error let's say GET/books fails, the breadcrumbs show th
 - A `tag` is a label attached to an error, that it can be searched and filtered.
 
 exemple: if the team needs to improve a specific category of errors,for example feature: books, the tags help to look for one category without the rest.
+
+## Ex 6
+
+## Question: You now send each error to Sentry. What does each tool give you that the other doesn't?
+
+Sentry provides stack traces, error grouping, timestamps, tags, and alerts, besically makes easier understand what goes wrong and where.
