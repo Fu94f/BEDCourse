@@ -300,6 +300,7 @@ app.get("/members/:id/loans", async (req: Request, res: Response) => {
        reportError(error, "members");
       res.status(500).send(error instanceof Error ? error.message : "Unknown error");
     }
+});
 
 /* 
 app.get("/debug-sentry", function mainHandler(req, res) {
