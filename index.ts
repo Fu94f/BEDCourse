@@ -319,4 +319,7 @@ async function start() {
     });
 }
 
-start();
+start().catch((error) => {
+    reportError(error, "startup");
+    console.error("Server failed to start:", error);
+});

@@ -1,83 +1,76 @@
 ## EX1
 
-## Question: Why must instrument.js be imported before everything else?
+## Question: What does docker ps show you? Which columns tell you that SonarQube is running, and on which port?
 
-Sentry needs to be imported first because it has to start before Express loads (it hooks into libraries as they load). If Express loads first, Sentry could miss some parts, like route details or some errors.
+- `docker ps` lists every container that is running, one per row.
+- `STATUS` is Up 20 seconds, which tells the container is running.
+- `PORTS` is 0.0.0.0:9000->9000/tcp, which tells that port 9000 on the computer is connected to port 9000 in the container.
 
-## Question: Why do we keep the DSN in .env instead of in the code?
 
-DSN goes in the `.env file` so that it doesnt get pushed to GitHub.Even if it is not necessarly a sensitive information, it is still standard practice to keep configuration separate from the code.
+## Question: Why run SonarQube in Docker instead of installing it directly on your computer?
+
+SonarQube is a big program that needs Java and its own setup. The docker image already contains everything it needs and can run independently from other programs, so I dont need to install anything on my computer.
 
 ## EX 2
 
-## Open the issue and find:  
+## Question: Did your project pass or fail the quality gate? How many issues did SonarQube find?
 
-## - the file and line number where the error was thrown
-## - your Node.js version
-## - your operating system
-## - the environment
+My project passed the quality gate. SonarQube found 1 issue, a reliability issue with medium impact, rating C. It found no security or maintainability issues. The project still passes, even with the coverage is 0.0% and the duplications are 17.4%.
 
-- file and line number: index.ts, line 16:9, in mainHandler
-- Node.js version: v24.19.0
-- Operating system: Windows 10.0.26300
-- environment: production
+## EX 3
 
+## Choose three different issues, and for each one, write in ANSWERS.md:
 
-## Question: You didn't add any extra information to this error yourself. List everything Sentry recorded anyway.
+## - the rule name and the file and line where it was found
+## - what is wrong, in your own words (use the Why is this an issue? tab)
+## - what the compliant code would look like
+## - whether you agree that it's a problem, and why
 
-- The error message ("My first Sentry error!");
-- if the error was handled (unhandled) and its level (error);
-- The stack trace;
-- The request (method GET and route /debug-sentry);
-- The URL;
-- The OS;
-- The environment;
-- The user's IP address ;
-- A trace ID;
-- The time it happened and the number of events;
-- The runtime: Node.js version
+- rule name: Promises should not be left unhandled, rule key: typescript:S9383
+- file: index.ts
+- line:322
 
-## Question: What happened when the handler was above the routes, and why? (Think about the order in which Express runs middleware.)
+- `start()` is an async function and returns a promise. If it fails (f.e when the database is down), nobody handles that error.
 
-I think here I was supposed to prove that order matters in Express. The expected result was that by moving the handler above the routes I wouldn't have new event in Sentry. Since Express runs middleware in the order top to bottm, and when /debug-sentry throws, Express should only pass the error to error handlers written after that route. A handler positioned above shouldn't see the error.
-
-My result didn't match though, an event arrived in every position, even with the handler removed.
-The most likely reason is my Sentry version,  where the handler function is marked deprecated and it seems to catch route errors on its own, without the handler.That's only an hypotesis because I couldnt find any answer in the documentation.
-
-## Ex 4
-
-## Question: Why didn't the errors inside your try/catch reach setupExpressErrorHandler by themselves?
-
-Because the route catches the error and answers by itself, so the error never reaches `setupExpressErrorHandler`. `Express` only passes an error forward to the error handlers if the route throws it or passes it on. Here the error goes to the catch block and the catch deals with it so the Sentry’s handler is never called. Inside the catch, `Sentry.captureException(error)` hands the error to Sentry first and then the routes gives a response.
-
-## Question: Several requests failed for the same reason. Did Sentry show them as separate issues, or group them? Why is that useful?
-
-Sentry shows them as a group because they all signal the same problem. I guess it's easier to get to root of the problem knowing that they are grouped for a reason.
-
-I added :
+- compliant code : 
 
 ```typescript
 
-integrations: (defaults) => defaults.filter((i) => i.name !== "Dedupe"),
+start().catch((error) => {
+    reportError(error, "startup");
+    console.error("Server failed to start:", error);
+});
+
 ```
-Sentry has a set of default integrations like `Dedupe` which drops an error if it is identical to the one just before it. In the exercise, when I was breaking the database and call every route, I was getting the same error again and again. With Dedupe on some of those events would never arrive, and I couldn’t check that every route shows up. So I looke up out to take Dedupe out of the defaults  so every event would be sent.
+- I agree that it is a problem because if the database is down I dont have anything to tell me why it stopped
 
-The events still shows grouped in one issue, but now the issue has the real number of events.
+## Question: Depending on the version, SonarQube groups issues either by the quality they affect (Security, Reliability, Maintainability) or by type (Vulnerability, Bug, Code Smell). Explain each of the three groups your SonarQube uses, with an example.
 
-## Ex 5
+My `Overview page` shows the version with Security, Reliability and Maintainability. 
 
-## Question: Explain the difference between a breadcrumb and a tag in your own words. Give one example of when each one would help your team
+SonarQube groups issues by the quality . 
 
-- A `breadcrumb` is a sort of small note that records what the app did before an error happened.
+- Security issues are problems that someone could impact on the security of the software for example,  the token written in package.json. 
 
-exemple: if there is an error let's say GET/books fails, the breadcrumbs show that the request has reached the route, so that we could undestand whsat happen to cause the error.
+- Reliability issues are problems that can make the code fail when it runs, for example the `start()` that had no `.catch`.
 
-- A `tag` is a label attached to an error, that it can be searched and filtered.
+- Maintainability issues concern the code readibility, for example long function or code that is copied in several places.
 
-exemple: if the team needs to improve a specific category of errors,for example feature: books, the tags help to look for one category without the rest.
+## Question: SonarQube, your tests and Sentry all help you find problems. What does each one find that the others can't?
+
+Sentry watches the app while is running and can find unpredicted mistakes and it tells you where and when to look. But it only reports something after it has happened.
+
+SonarQube reads the code without running it, so it can find risky patterns before anything breaksbut it cannot tell if my code does the right thing
+
+The tests run the code with cases that I wrote, so they find logic mistakes, but only the one I thought about it.
+
+## Ex 4
+
+## 
+## 
+
+## 
 
 ## Ex 6
 
-## Question: You now send each error to Sentry. What does each tool give you that the other doesn't?
-
-Sentry provides stack traces, error grouping, timestamps, tags, and alerts, besically makes easier understand what goes wrong and where.
+## 
