@@ -1,16 +1,11 @@
 services:
-  db:
-    container_name: postgres_container
-    image: postgres
-    restart: unless-stopped
+  sonarqube:
+    image: sonarqube
+    container_name: my-sonarqube
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
+      - "9000:9000"
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - sonarqube_data:/opt/sonarqube/data
 
 volumes:
-  postgres_data:
+  sonarqube_data:
