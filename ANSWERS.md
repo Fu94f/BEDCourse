@@ -54,6 +54,16 @@ Because the route catches the error and answers by itself, so the error never re
 
 Sentry shows them as a group because they all signal the same problem. I guess it's easier to get to root of the problem knowing that they are grouped for a reason.
 
+I added :
+
+```typescript
+
+integrations: (defaults) => defaults.filter((i) => i.name !== "Dedupe"),
+```
+Sentry has a set of default integrations like `Dedupe` which drops an error if it is identical to the one just before it. In the exercise, when I was breaking the database and call every route, I was getting the same error again and again. With Dedupe on some of those events would never arrive, and I couldn’t check that every route shows up. So I looke up out to take Dedupe out of the defaults  so every event would be sent.
+
+The events still shows grouped in one issue, but now the issue has the real number of events.
+
 ## Ex 5
 
 ## Question: Explain the difference between a breadcrumb and a tag in your own words. Give one example of when each one would help your team
