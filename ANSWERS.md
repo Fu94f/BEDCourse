@@ -1,4 +1,4 @@
-## EX1
+## Ex 1
 
 ## Question: What does docker ps show you? Which columns tell you that SonarQube is running, and on which port?
 
@@ -11,13 +11,13 @@
 
 SonarQube is a big program that needs Java and its own setup. The docker image already contains everything it needs and can run independently from other programs, so I dont need to install anything on my computer.
 
-## EX 2
+## Ex 2
 
 ## Question: Did your project pass or fail the quality gate? How many issues did SonarQube find?
 
 My project passed the quality gate. SonarQube found 1 issue, a reliability issue with medium impact, rating C. It found no security or maintainability issues. The project still passes, even with the coverage is 0.0% and the duplications are 17.4%.
 
-## EX 3
+## Ex 3
 
 ## Choose three different issues, and for each one, write in ANSWERS.md:
 
@@ -66,11 +66,48 @@ The tests run the code with cases that I wrote, so they find logic mistakes, but
 
 ## Ex 4
 
-## 
-## 
+## Question: Your package.json goes to GitHub. What could someone do with your SonarQube token if they found it there? What about a database password or a Sentry DSN?
 
-## 
 
+The token authenticates a user to the  server and if someone finds the token, they could potentially access the server with the permissions assigned to that token or have access to information, like analysis results and security vulnerabilities.
+The damage depends on the token's permission level.
+
+A database password is potentially much more dangerous because it can provide direct access to any sorts of sensitive informations and allow to manipulate the data.
+
+with the DSN, they could potentially send fake error reports to contaminate the analysis but it does not give permission to read private data.
+
+
+## Question: Why is it better to put settings like the project key in sonar-project.properties than in a long command?
+
+Setting like sonar-project.properties keeps configuration organized in one place and makes commands shorter. It can also reduce mistakes and makes projects easier to read and share with a team.
+
+
+## Ex 5
+
+## Look at the Code tab in SonarQube. Which folders and files were scanned?
+	
+models
+utils
+index.ts
+instrument.ts
+library.integration.test.ts
+library.test.ts
+library.ts
+sequelize.ts
+
+
+## Question: What changed in the numbers, and why? Why is it a problem when a tool reports issues in code you didn't write?
+
+- The lines of code went from 466 to 401, and the number of issues went from 1 to 0. The difference comes mostly from my two test files, which have 92 lines together. After I set `sonar.tests` and `sonar.test.inclusions`, SonarQube treats them as tests, so they are no longer counted as normal code. The exclusion of node_modules changed nothing, because it was already ignored through .gitignore.
+
+- It is a problem because the list gets long and full of things you can't or shouldn't fix and the actual problems became much harder to find.
+
+
+
+
+--- Worked until here--
 ## Ex 6
 
-## 
+## Question: Why run your tests after every fix, even when the change looks small?
+
+## Question: Choose one of your fixes. Is the code easier to read now? Explain why or why not.
