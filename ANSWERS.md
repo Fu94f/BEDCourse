@@ -41,3 +41,19 @@ The context window lenght is the amount of messages the agent sends to the model
 ## Question: Why not just set the context window to 1000? Think about what the model has to read on every message, and what that costs.
 
 Because the agent would send the last 1000 messages to the model every time a new one is sent. It would defently affect the speed but also models have actual costs by the amount of text read so it each answer would be pretty expensive. 
+
+## After each question, open the agent's logs in the execution and check: did the agent call Get weather or not?
+
+No it doesnt, only after a follow up question regarding my location. In that case it does.
+
+## Question: Which questions made the agent use the weather tool, and which didn't? Nobody told the agent when to use the tool. How did it decide?
+
+As explaind in the prev question, the agent uses the tool after asking for your location with the first two questions, which are related to weather. The agent anylizes the context elememnts, the language with which the question is formulated and undestands when the tool is needed or not.
+
+## Question: This is the difference between an agent and the automation from Exercise 1. Explain it using what you saw in the logs.
+
+The agent adapts it self to the content given and reacts according to the informations it recives by making a decision, which in this case is to call or not the tool.
+
+## Question: Read the recap about MCP again. In this exercise, the weather tool only works inside n8n. What would change if OpenWeatherMap offered an MCP server instead? Name one advantage.
+
+With an MCP server, the weather tool wouldnt need to be in n8n because anyy agent that would supports MCP could connect to it. The advantage could be the  reusability because i wouldnt need to rebuild a specific tool for each agent
