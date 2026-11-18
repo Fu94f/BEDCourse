@@ -57,3 +57,23 @@ The agent adapts it self to the content given and reacts according to the inform
 ## Question: Read the recap about MCP again. In this exercise, the weather tool only works inside n8n. What would change if OpenWeatherMap offered an MCP server instead? Name one advantage.
 
 With an MCP server, the weather tool wouldnt need to be in n8n because anyy agent that would supports MCP could connect to it. The advantage could be the  reusability because i wouldnt need to rebuild a specific tool for each agent
+
+## Question: Explain API, HTTP request and function in your own words. Use the vending machine from the video, and one example from your own Express API.
+
+Using the vending machine example, an API is the vending machine, you can choose what you want, press a button, and the machine gives you the product. You don't need to know how the machine works internally.The API is besically the bridge that allows different software systems to exchange information and use each other's functionality without needing to know how the other system works. 
+
+An HTTP request is like pressing a button on the vending machine. When you select a product, you send a request to the machine asking for that product. 
+
+A function is a block of code that performs a specific task. In the vending machine example, the function is like the internal mechanism that checks your selection and gives you the product.
+
+In my Express API, GET /books is the request asks the server to retrieve the books, and the function behind that route fetches the books from the database and returns them.
+
+## Question: What happened to your agent's answer when you changed the tool's description to something vague, like tool? Try it, then change it back.
+
+If the description is empty or says something vague like “HTTP request”, the agent doesn’t know when to use it so it tries to addapt to the tools that it has, in this case it doen't call the right tool
+
+## Question: Compare the answers from the bad prompt and the structured prompt. Give two concrete differences.
+
+## Question: Which of the six parts made the biggest difference for your agent, and why?
+
+## Question: Your prompt is always read by the agent, on every message. A skill is only read when a task needs it. Imagine your agent could do ten different jobs, each with a long set of rules. Why would skills be better than one huge prompt?
