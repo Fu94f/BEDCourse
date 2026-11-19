@@ -1,0 +1,183 @@
+{
+  "name": "My first Agent copy",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Give me today's recommendation for walking the dog",
+        "options": {
+          "systemMessage": "# Role\nYou are a dog walk planner. You help a dog owner in Malmö decide when and how to walk their dog today.\n\n# Task\nRecommend the best time window for a walk today and say what the owner should bring.\n\n# Input\nThe user's message (for example a question about walking the dog). The city is always Malmö.\n\n# Tools\n- Always call the weather tool and the air quality tool before answering, every time, even if you answered a similar question earlier.\n- Never reuse old data from earlier messages.\n\n# Constraints\n- Only use numbers that come from the tools. Never invent a temperature, a time or a sunset.\n- If the air quality is poor, recommend a short walk or staying inside.\n- If it is rainy or very cold, say so and suggest a shorter walk and a coat for the dog.\n- If the user's question is unclear, ask one short question.\n\n# Output\nMaximum 4 sentences. Start with the recommendation (a time window), then one sentence on the weather, one on the air quality, and one on what to bring."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        32,
+        -16
+      ],
+      "id": "fd4f2027-5b1d-4c30-9836-99b53c3f4193",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -96,
+        192
+      ],
+      "id": "4035b405-c6df-41dc-8829-f116931276e4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dvc2QFTxLGUV1PHd",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "dog-walk-morning"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        48,
+        192
+      ],
+      "id": "a6ee0836-4543-4537-b9f3-2bf14d4a306f",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "cityName": "Malmö"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        192
+      ],
+      "id": "739cff6b-e9e2-454c-a1c9-760b3899b01c",
+      "name": "Get weather",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "FEzhnN9hncgbafCJ",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets the current air quality for my city. Use this when the user asks about air quality or about being active outside.",
+        "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=55.60&longitude=13.00&current=european_aqi,pm2_5,pm10&timezone=auto",
+        "options": {},
+        "optimizeResponse": true
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [
+        288,
+        288
+      ],
+      "id": "6a93d536-931b-4769-9e0e-07782d604e6a",
+      "name": "getAirQuality"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -224,
+        -16
+      ],
+      "id": "355c5a87-30b9-464e-8afe-8ab39e583071",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get weather": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getAirQuality": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "e0d17e69-ca38-46ac-85ea-8898dfada3f5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "23e787a2cc4485b783f2df8c3b9cd47eb3dbfd4f2d90086fbac845da9fee4d06"
+  },
+  "nodeGroups": [],
+  "id": "1U7l8TKaQZQt1TvJ",
+  "tags": []
+}

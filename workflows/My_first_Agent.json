@@ -1,0 +1,171 @@
+{
+  "name": "My first Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -192,
+        -16
+      ],
+      "id": "ce98b548-fd6b-4d8b-a7c3-3740c40c8f14",
+      "name": "When chat message received",
+      "webhookId": "d4a153de-608f-4389-b456-806a8d19d0e2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        32,
+        -16
+      ],
+      "id": "c362704d-a56a-4ca3-b7b2-0c6ac553ea4a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -96,
+        192
+      ],
+      "id": "40595bae-e031-45f8-9883-6b7215f3c27b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dvc2QFTxLGUV1PHd",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "weather"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        48,
+        192
+      ],
+      "id": "e2da8639-f51b-4b20-9a3b-c45ab6bfc6d8",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "cityName": "Malmö"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        192
+      ],
+      "id": "7172a8f7-542b-4aa3-a8ec-ff5012dfeeb3",
+      "name": "Get weather",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "FEzhnN9hncgbafCJ",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets the current air quality for my city. Use this when the user asks about air quality or about being active outside.",
+        "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=55.60&longitude=13.00&current=european_aqi,pm2_5,pm10&timezone=auto",
+        "options": {},
+        "optimizeResponse": true
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [
+        288,
+        288
+      ],
+      "id": "5200f9dd-f565-435f-8788-c850698f9081",
+      "name": "getAirQuality"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get weather": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getAirQuality": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5be609cc-14c6-4542-a7ff-06d814b83150",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "23e787a2cc4485b783f2df8c3b9cd47eb3dbfd4f2d90086fbac845da9fee4d06"
+  },
+  "nodeGroups": [],
+  "id": "8OW7l8EYvBdNxVCF",
+  "tags": []
+}

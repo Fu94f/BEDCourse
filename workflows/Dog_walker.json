@@ -1,0 +1,170 @@
+{
+  "name": "Dog walker",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -192,
+        -16
+      ],
+      "id": "9f920c9d-3ea8-4192-b42f-fa10b9cc9928",
+      "name": "When chat message received",
+      "webhookId": "c1d7375f-9e06-405c-b217-1988f86a9790"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# Role\nYou are a dog walk planner. You help a dog owner in Malmö decide when and how to walk their dog today.\n\n# Task\nRecommend the best time window for a walk today and say what the owner should bring.\n\n# Input\nThe user's message (for example a question about walking the dog). The city is always Malmö.\n\n# Tools\n- Always call the weather tool and the air quality tool before answering, every time, even if you answered a similar question earlier.\n- Never reuse old data from earlier messages.\n\n# Constraints\n- Only use numbers that come from the tools. Never invent a temperature, a time or a sunset.\n- If the air quality is poor, recommend a short walk or staying inside.\n- If it is rainy or very cold, say so and suggest a shorter walk and a coat for the dog.\n- If the user's question is unclear, ask one short question.\n\n# Output\nMaximum 4 sentences. Start with the recommendation (a time window), then one sentence on the weather, one on the air quality, and one on what to bring."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        32,
+        -16
+      ],
+      "id": "2bc37608-4d56-4f42-ba5f-9d199e10fa2f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -96,
+        192
+      ],
+      "id": "28dc44f2-0b22-41db-b570-900f8950eb03",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dvc2QFTxLGUV1PHd",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        48,
+        192
+      ],
+      "id": "b64012b9-2caf-4aba-9fe1-e9364570d06c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "cityName": "Malmö"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        192
+      ],
+      "id": "c0cd3919-65d9-4774-baac-25ef370258a0",
+      "name": "Get weather",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "FEzhnN9hncgbafCJ",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gets the current air quality for my city. Use this when the user asks about air quality or about being active outside.",
+        "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=55.60&longitude=13.00&current=european_aqi,pm2_5,pm10&timezone=auto",
+        "options": {},
+        "optimizeResponse": true
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [
+        288,
+        288
+      ],
+      "id": "d4398682-9e76-48b9-a699-440b57dfb147",
+      "name": "getAirQuality"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get weather": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getAirQuality": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d2d5e72e-9d38-4d48-a35c-ff5d534bcd15",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "23e787a2cc4485b783f2df8c3b9cd47eb3dbfd4f2d90086fbac845da9fee4d06"
+  },
+  "nodeGroups": [],
+  "id": "wAhdq56M2rwabmq2",
+  "tags": []
+}
