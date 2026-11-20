@@ -53,3 +53,5 @@ CI uses `npm ci`(also known as Clean Install) because is meant to be used in aut
 ## Exercise 6
 
 ## Question: What does branch protection do that CI alone can't?
+
+Branch protection is a set of repository level rules that prevent unsafe changes to important code branches by enforcing checks. CI is only showing the results but it cant prevent the merging. Before the rule, I could still click Merge, or push straight to week12/ci, and ignore the red cross. The rule made the result mandatory by disactivating the function to merge and displays a message to explain why it is not allowed.
