@@ -22,7 +22,7 @@ GitHub had no workflow to run. A push triggers a workflow only if a workflow fil
 
 ## Read the report. Click Details on the checks. How many jobs ran, and why?
 
-it runs 2 jobs, 1 per value.
+It runs 2 jobs, 1 per value.
 
 ## Question: Why can a test pass on your laptop but fail in CI? Think of why the video's first run failed.
 
@@ -39,8 +39,16 @@ The test fail gets caught on the pull request, before it reaches week12/ci. A re
 
 ## Question: Would this step have caught the possibly null bug from Week 11, Exercise 9?
 
+I didnt do the exercise 9 in week 11
+
 ## Exercise 5
-## Question: Would this step have caught the possibly null bug from Week 11, Exercise 9?
+## Question: What's the difference between npm ci and npm install, and why does CI use npm ci?
+
+`npm i`reads package.json to create a list of dependencies and uses package-lock.json to inform which versions of these dependencies to install. If a dependency is not in package-lock.json it will be added by npm install.
+
+`npm ci` installs dependencies directly from package-lock.json and uses package.json only to validate that there are no mismatched versions. If any dependencies are missing or have incompatible versions, it will throw an error.It removes node_modules and install all dependencies at once and it never writes to package.json or package-lock.json.
+
+CI uses `npm ci`(also known as Clean Install) because is meant to be used in automated environments, such as test platforms, continuous integration, and deployment or, any situation where you want to make sure you're doing a clean install of your dependencies.It doesn't generate package-lock.json file, it requires that package-lock.json to already be there and it installs exactly the versions that are listed there.This way you can ensure that you are using exactly the same dependencies you have locally.
 
 ## Exercise 6
 
