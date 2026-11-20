@@ -56,4 +56,3 @@ export const borrowBook = (title: unknown, memberId: unknown): Loan =>{
     return registerLoan(loanId, book.title, memberId);
 };
 
-const copies: number = "three";
