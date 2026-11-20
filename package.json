@@ -13,5 +13,9 @@
     "typecheck": "tsc --noEmit",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
+  },
+
+  "engines": {
+    "node": ">=22"
   }
 }
