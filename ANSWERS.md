@@ -20,11 +20,19 @@ GitHub had no workflow to run. A push triggers a workflow only if a workflow fil
 
 ## Exercise 2
 
+## Read the report. Click Details on the checks. How many jobs ran, and why?
+
+it runs 2 jobs, 1 per value.
+
 ## Question: Why can a test pass on your laptop but fail in CI? Think of why the video's first run failed.
+
+CI starts on a fresh, empty machine, so it can differ from what is locally on the laptop: Node version, installed packages, operating system, environment variables or files that exist only locally.
 
 ## Exercise 3
 
 ## Question: Why is a red cross on the pull request better than one after merging?
+
+The test fail gets caught on the pull request, before it reaches week12/ci. A red cross after merging would mean the broken code is already reached the main branch and that could be amuch bigger problem to solve.
 
 
 ## Exercise 4
