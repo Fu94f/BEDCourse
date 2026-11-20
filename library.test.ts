@@ -60,8 +60,5 @@ describe("Library Unit Tests", () => {
         expect(() => registerLoan(1234, "harry potter",  3)).toThrow();
     });
 
-    test("failing", () => {
-        expect(1 + 1).toBe(3);
-    });
 });
 
